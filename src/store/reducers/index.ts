@@ -4,7 +4,7 @@ import userReducer from './userSlice'
 
  const rootReducer = combineReducers({
     counter:counterReducer,
-    user:userReducer
+    user:userReducer,
 })
 
 

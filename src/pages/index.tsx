@@ -10,8 +10,14 @@ export default function Home() {
   return (
     <main className="">
       <div className="p-4">
-        <Button className='m-2' color='inherit' variant='contained' ><Link style={{textDecoration:'none'}} href={'/login'}>Login</Link></Button>
-        <Button className='m-2' color='inherit' variant='contained' ><Link style={{textDecoration:'none'}} href={'/signup'}>Signup</Link></Button>
+        
+        <Link style={{ textDecoration: 'none' }} href={'/user/login'}>
+          <Button className='m-2' color='inherit' variant='contained' >Login</Button>
+        </Link>
+        
+        <Link style={{ textDecoration: 'none' }} href={'/user/signup'}>
+          <Button className='m-2' color='inherit' variant='contained' >Signup</Button>
+        </Link>
       </div>
     </main>
   )

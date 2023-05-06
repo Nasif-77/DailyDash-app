@@ -9,8 +9,9 @@ export const signupSchema = yup.object({
         .required('Your name is required'),
     email: yup
         .string()
-        .email('Enter a valid email')
-        .required('Email is required'),
+        .email('please enter a valid Email')
+        .required("Please Enter Your Email")
+    ,
     password: yup
         .string()
         .min(8, 'Password should be of minimum 8 characters length')
@@ -22,9 +23,16 @@ export const signupSchema = yup.object({
         .required('Password confirmation is required'),
     contact: yup
         .string()
-        .min(10, 'Contact must be 10 characters')
-        .max(10, 'Contacts must be 10 characters')
-        .required('Contacts is required')
+        .min(10, "Please enter a valid phone number")
+        .max(10, "Please enter a valid phone number")
+        .required('Your contact details is required')
+})
+
+
+export const otpSchema = yup.object({
+    otp: yup
+        .number()
+        .required("Please enter your OTP")
 })
 
 

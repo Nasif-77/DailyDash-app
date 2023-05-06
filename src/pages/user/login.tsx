@@ -1,4 +1,4 @@
-import Login from '@/components/Login'
+import Login from '../../components/Login'
 import { decrement, decrementByAmount, increment, incrementByAmount, reset, selectCount } from '@/store/reducers/counterSlice'
 import { Button, Typography } from '@mui/material'
 import React from 'react'
