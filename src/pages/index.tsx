@@ -10,13 +10,13 @@ export default function Home() {
   return (
     <main className="">
       <div className="p-4">
-        
-        <Link style={{ textDecoration: 'none' }} href={'/user/login'}>
-          <Button className='m-2' color='inherit' variant='contained' >Login</Button>
+
+        <Link style={{ textDecoration: 'none' }} href={'/auth/login'}>
+          <Button variant='contained' >Login</Button>
         </Link>
-        
-        <Link style={{ textDecoration: 'none' }} href={'/user/signup'}>
-          <Button className='m-2' color='inherit' variant='contained' >Signup</Button>
+
+        <Link style={{ textDecoration: 'none' }} href={'/auth/signup'}>
+          <Button variant='contained' >Signup</Button>
         </Link>
       </div>
     </main>

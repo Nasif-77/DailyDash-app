@@ -1,21 +1,24 @@
-import { Box, Button, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography, styled } from '@mui/material'
+import { Box, Button, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import classes from '../styles/general.module.scss'
 import { useFormik } from 'formik';
 import { loginSchema } from '@/validation/validation';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { selectEmail, selectPassword, setEmail, setPassword } from '@/store/reducers/userSlice';
+import { authService } from '@/helpers/services/auth';
+import { useRouter } from 'next/router';
+
 
 
 function Login() {
 
-    const dispatch = useDispatch()
-    const iEmail = useSelector(selectEmail)
-    const iPassword = useSelector(selectPassword)
+    const router = useRouter()
+    // const dispatch = useDispatch()
+    // const iEmail = useSelector(selectEmail)
+    // const iPassword = useSelector(selectPassword)
 
     const [showPassword, setShowPassword] = useState(false);
+    const [inputText, setInputText] = useState({ state: false, text: '' });
+    const [passwordText, setPasswordText] = useState({ state: false, text: '' });
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -31,16 +34,30 @@ function Login() {
         },
         validationSchema: loginSchema,
         onSubmit: () => {
-
+            sentValues()
         }
     })
 
-    const { values, touched, handleBlur, handleChange, errors } = formik
+    const { values, touched, handleChange, handleBlur, errors, handleSubmit } = formik
+
+    const sentValues = async () => {
+        try {
+
+            const response = await authService.login(values)
+            if (response.status === 200) router.push('/user')
+
+        } catch (error: any) {
+            if (error.response.status === 404) setInputText({ state: true, text: `Couldn't find your Dailydash account` })
+            else if (error.response.status === 401) setPasswordText({
+                state: true, text: `Wrong password. Try again or click Forgot password to reset it.
+           ` })
+        }
+    }
 
 
     return (
         <div>
-            <form className={classes.loginForm}>
+            <form className={classes.loginForm} onSubmit={handleSubmit}>
                 <Paper elevation={4} sx={{ padding: '20px' }} className={classes.paper}>
                     <Box className={classes.box}>
 
@@ -59,24 +76,24 @@ function Login() {
                                 id='email'
                                 type='email'
                                 value={values.email}
-                                error={touched.email && Boolean(errors.email)}
+                                error={touched.email && Boolean(errors.email) || inputText.state}
+                                onChange={(e) => { handleChange(e); setInputText({ state: false, text: '' }) }}
                                 onBlur={handleBlur}
-                                onChange={handleChange}
-                                helperText={touched.email && errors.email}
+                                helperText={touched.email && errors.email || inputText.state && inputText.text}
                                 fullWidth
                             />
 
                             <FormControl sx={{ width: '100%' }} variant="outlined">
-                                <InputLabel error={touched.password && Boolean(errors.password)}
+                                <InputLabel error={touched.password && Boolean(errors.password) || passwordText.state}
                                     htmlFor="outlined-adornment-password">Password</InputLabel>
                                 <OutlinedInput
                                     fullWidth
                                     name='password'
                                     id='password'
                                     value={values.password}
-                                    error={touched.password && Boolean(errors.password)}
+                                    error={touched.password && Boolean(errors.password) || passwordText.state}
+                                    onChange={(e) => { handleChange(e); setPasswordText({ state: false, text: '' }) }}
                                     onBlur={handleBlur}
-                                    onChange={handleChange}
                                     type={showPassword ? 'text' : 'password'}
                                     endAdornment={
                                         <InputAdornment position="end">
@@ -91,16 +108,26 @@ function Login() {
                                     }
                                     label='Password'
                                 />
-                                <FormHelperText className={classes.FormHelperText} sx={{ color: '#d32f2f' }}>{touched.password && errors.password}</FormHelperText>
-                                <Typography fontSize={'15px'} sx={{cursor:'pointer'}}  color={'#1976d2'} >Forgot password?</Typography>
+                                <FormHelperText className={classes.FormHelperText} sx={{ color: '#d32f2f' }}>
+                                    {touched.password && errors.password || passwordText.state && passwordText.text}
+                                </FormHelperText>
+                                <Typography fontSize={'15px'} sx={{ cursor: 'pointer' }} color={'#1976d2'} >Forgot password?</Typography>
                             </FormControl>
 
                         </Box>
 
-                        <Button variant='outlined'>Submit</Button>
+                        <Button variant='outlined' type='submit'>Submit</Button>
+
                         <Typography>Login with
                             <Button>
-                                <svg viewBox="0 0 75 24" width="75" height="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="BFr46e xduoyf"><g id="qaEJec"><path fill="#ea4335" d="M67.954 16.303c-1.33 0-2.278-.608-2.886-1.804l7.967-3.3-.27-.68c-.495-1.33-2.008-3.79-5.102-3.79-3.068 0-5.622 2.41-5.622 5.96 0 3.34 2.53 5.96 5.92 5.96 2.73 0 4.31-1.67 4.97-2.64l-2.03-1.35c-.673.98-1.6 1.64-2.93 1.64zm-.203-7.27c1.04 0 1.92.52 2.21 1.264l-5.32 2.21c-.06-2.3 1.79-3.474 3.12-3.474z"></path></g><g id="YGlOvc"><path fill="#34a853" d="M58.193.67h2.564v17.44h-2.564z"></path></g><g id="BWfIk"><path fill="#4285f4" d="M54.152 8.066h-.088c-.588-.697-1.716-1.33-3.136-1.33-2.98 0-5.71 2.614-5.71 5.98 0 3.338 2.73 5.933 5.71 5.933 1.42 0 2.548-.64 3.136-1.36h.088v.86c0 2.28-1.217 3.5-3.183 3.5-1.61 0-2.6-1.15-3-2.12l-2.28.94c.65 1.58 2.39 3.52 5.28 3.52 3.06 0 5.66-1.807 5.66-6.206V7.21h-2.48v.858zm-3.006 8.237c-1.804 0-3.318-1.513-3.318-3.588 0-2.1 1.514-3.635 3.318-3.635 1.784 0 3.183 1.534 3.183 3.635 0 2.075-1.4 3.588-3.19 3.588z"></path></g><g id="e6m3fd"><path fill="#fbbc05" d="M38.17 6.735c-3.28 0-5.953 2.506-5.953 5.96 0 3.432 2.673 5.96 5.954 5.96 3.29 0 5.96-2.528 5.96-5.96 0-3.46-2.67-5.96-5.95-5.96zm0 9.568c-1.798 0-3.348-1.487-3.348-3.61 0-2.14 1.55-3.608 3.35-3.608s3.348 1.467 3.348 3.61c0 2.116-1.55 3.608-3.35 3.608z"></path></g><g id="vbkDmc"><path fill="#ea4335" d="M25.17 6.71c-3.28 0-5.954 2.505-5.954 5.958 0 3.433 2.673 5.96 5.954 5.96 3.282 0 5.955-2.527 5.955-5.96 0-3.453-2.673-5.96-5.955-5.96zm0 9.567c-1.8 0-3.35-1.487-3.35-3.61 0-2.14 1.55-3.608 3.35-3.608s3.35 1.46 3.35 3.6c0 2.12-1.55 3.61-3.35 3.61z"></path></g><g id="idEJde"><path fill="#4285f4" d="M14.11 14.182c.722-.723 1.205-1.78 1.387-3.334H9.423V8.373h8.518c.09.452.16 1.07.16 1.664 0 1.903-.52 4.26-2.19 5.934-1.63 1.7-3.71 2.61-6.48 2.61-5.12 0-9.42-4.17-9.42-9.29C0 4.17 4.31 0 9.43 0c2.83 0 4.843 1.108 6.362 2.56L14 4.347c-1.087-1.02-2.56-1.81-4.577-1.81-3.74 0-6.662 3.01-6.662 6.75s2.93 6.75 6.67 6.75c2.43 0 3.81-.972 4.69-1.856z"></path></g></svg>
+                                <svg viewBox="0 0 75 24" width="75" height="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="BFr46e xduoyf">
+                                    <g id="qaEJec"><path fill="#ea4335" d="M67.954 16.303c-1.33 0-2.278-.608-2.886-1.804l7.967-3.3-.27-.68c-.495-1.33-2.008-3.79-5.102-3.79-3.068 0-5.622 2.41-5.622 5.96 0 3.34 2.53 5.96 5.92 5.96 2.73 0 4.31-1.67 4.97-2.64l-2.03-1.35c-.673.98-1.6 1.64-2.93 1.64zm-.203-7.27c1.04 0 1.92.52 2.21 1.264l-5.32 2.21c-.06-2.3 1.79-3.474 3.12-3.474z"></path></g>
+                                    <g id="YGlOvc"><path fill="#34a853" d="M58.193.67h2.564v17.44h-2.564z"></path></g>
+                                    <g id="BWfIk"><path fill="#4285f4" d="M54.152 8.066h-.088c-.588-.697-1.716-1.33-3.136-1.33-2.98 0-5.71 2.614-5.71 5.98 0 3.338 2.73 5.933 5.71 5.933 1.42 0 2.548-.64 3.136-1.36h.088v.86c0 2.28-1.217 3.5-3.183 3.5-1.61 0-2.6-1.15-3-2.12l-2.28.94c.65 1.58 2.39 3.52 5.28 3.52 3.06 0 5.66-1.807 5.66-6.206V7.21h-2.48v.858zm-3.006 8.237c-1.804 0-3.318-1.513-3.318-3.588 0-2.1 1.514-3.635 3.318-3.635 1.784 0 3.183 1.534 3.183 3.635 0 2.075-1.4 3.588-3.19 3.588z"></path></g>
+                                    <g id="e6m3fd"><path fill="#fbbc05" d="M38.17 6.735c-3.28 0-5.953 2.506-5.953 5.96 0 3.432 2.673 5.96 5.954 5.96 3.29 0 5.96-2.528 5.96-5.96 0-3.46-2.67-5.96-5.95-5.96zm0 9.568c-1.798 0-3.348-1.487-3.348-3.61 0-2.14 1.55-3.608 3.35-3.608s3.348 1.467 3.348 3.61c0 2.116-1.55 3.608-3.35 3.608z"></path></g>
+                                    <g id="vbkDmc"><path fill="#ea4335" d="M25.17 6.71c-3.28 0-5.954 2.505-5.954 5.958 0 3.433 2.673 5.96 5.954 5.96 3.282 0 5.955-2.527 5.955-5.96 0-3.453-2.673-5.96-5.955-5.96zm0 9.567c-1.8 0-3.35-1.487-3.35-3.61 0-2.14 1.55-3.608 3.35-3.608s3.35 1.46 3.35 3.6c0 2.12-1.55 3.61-3.35 3.61z"></path></g>
+                                    <g id="idEJde"><path fill="#4285f4" d="M14.11 14.182c.722-.723 1.205-1.78 1.387-3.334H9.423V8.373h8.518c.09.452.16 1.07.16 1.664 0 1.903-.52 4.26-2.19 5.934-1.63 1.7-3.71 2.61-6.48 2.61-5.12 0-9.42-4.17-9.42-9.29C0 4.17 4.31 0 9.43 0c2.83 0 4.843 1.108 6.362 2.56L14 4.347c-1.087-1.02-2.56-1.81-4.577-1.81-3.74 0-6.662 3.01-6.662 6.75s2.93 6.75 6.67 6.75c2.43 0 3.81-.972 4.69-1.856z"></path></g>
+                                </svg>
                             </Button>
                         </Typography>
 

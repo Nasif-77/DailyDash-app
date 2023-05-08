@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify'
 
 
+
 function Signup() {
 
     const router = useRouter()
@@ -64,115 +65,120 @@ function Signup() {
 
 
 
-
     return (
 
         <>
 
-            <div className="vh-100 d-flex flex-column justify-content-center align-items-center">
+            <div className={`${classes.signup}`}>
 
-                <form className={`${classes.form}`} onSubmit={handleSubmit}>
-                    <Box
-                        className={classes.child}
-                    >
-                        <TextField
-                            name="name"
-                            label="Name"
-                            variant="outlined"
-                            fullWidth
-                            type="text"
-                            value={values.name}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={touched.name && Boolean(errors.name)}
-                            helperText={touched.name && errors.name}
-                        />
+                <form className={`${classes.signupForm}`} onSubmit={handleSubmit}>
+                    <Paper className={classes.paper} elevation={4}>
 
-                        <TextField
-                            name="email"
-                            label="E-mail"
-                            variant="outlined"
-                            fullWidth
-                            type="email"
-                            value={values.email}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={touched.email && Boolean(errors.email)}
-                            helperText={touched.email && errors.email}
-                        />
+                        <Typography variant='body1' >Fill this form to create your dailydash account</Typography>
 
-                        <FormControl className={classes.FormControl} sx={{ width: '35ch' }} variant="outlined">
-                            <InputLabel error={touched.password && Boolean(errors.password)} className={classes.InputLabel} htmlFor="outlined-adornment-password">Password</InputLabel>
-                            <OutlinedInput
-                                className={classes.Input}
-                                name='password'
-                                id='password'
-                                value={values.password}
-                                error={touched.password && Boolean(errors.password)}
-                                onBlur={handleBlur}
+                        <Box
+                            className={classes.child}
+                        >
+                            <TextField
+                                name="name"
+                                label="Name"
+                                variant="outlined"
+                                fullWidth
+                                type="text"
+                                value={values.name}
                                 onChange={handleChange}
-                                type={showPassword ? 'text' : 'password'}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                        >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label='Password'
-                            />
-                            <FormHelperText className={classes.FormHelperText} sx={{ color: '#d32f2f' }}>{touched.password && errors.password}</FormHelperText>
-                        </FormControl>
-
-
-                        <FormControl className={classes.FormControl} sx={{ width: '35ch' }} variant="outlined">
-                            <InputLabel error={touched.confirmPassword && Boolean(errors.confirmPassword)} className={classes.InputLabel} htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
-                            <OutlinedInput
-                                className={classes.Input}
-                                name='confirmPassword'
-                                id='confirmPassword'
-                                value={values.confirmPassword}
-                                error={touched.confirmPassword && Boolean(errors.confirmPassword)}
                                 onBlur={handleBlur}
-                                onChange={handleChange}
-                                type={showCPassword ? 'text' : 'password'}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowCPassword}
-                                            onMouseDown={handleMouseDownCPassword}
-                                        >
-                                            {showCPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label='Confirm Password'
+                                error={touched.name && Boolean(errors.name)}
+                                helperText={touched.name && errors.name}
                             />
-                            <FormHelperText className={classes.FormHelperText} sx={{ color: '#d32f2f' }} >{touched.confirmPassword && errors.confirmPassword}</FormHelperText>
-                        </FormControl>
 
-                        <TextField
-                            name="contact"
-                            label="Phone number"
-                            variant="outlined"
-                            fullWidth
-                            type="number"
-                            value={values.contact}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={touched.contact && Boolean(errors.contact)}
-                            helperText={touched.contact && errors.contact}
-                        />
+                            <TextField
+                                name="email"
+                                label="E-mail"
+                                variant="outlined"
+                                fullWidth
+                                type="email"
+                                value={values.email}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={touched.email && Boolean(errors.email)}
+                                helperText={touched.email && errors.email}
+                            />
+
+                            <FormControl className={classes.FormControl} variant="outlined">
+                                <InputLabel error={touched.password && Boolean(errors.password)} className={classes.InputLabel} htmlFor="outlined-adornment-password">Password</InputLabel>
+                                <OutlinedInput
+                                    className={classes.Input}
+                                    name='password'
+                                    id='password'
+                                    value={values.password}
+                                    error={touched.password && Boolean(errors.password)}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    fullWidth
+                                    type={showPassword ? 'text' : 'password'}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    label='Password'
+                                />
+                                <FormHelperText className={classes.FormHelperText} sx={{ color: '#d32f2f' }}>{touched.password && errors.password}</FormHelperText>
+                            </FormControl>
 
 
-                    </Box>
+                            <FormControl className={classes.FormControl} variant="outlined">
+                                <InputLabel error={touched.confirmPassword && Boolean(errors.confirmPassword)} className={classes.InputLabel} htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
+                                <OutlinedInput
+                                    className={classes.Input}
+                                    name='confirmPassword'
+                                    id='confirmPassword'
+                                    value={values.confirmPassword}
+                                    error={touched.confirmPassword && Boolean(errors.confirmPassword)}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    fullWidth
+                                    type={showCPassword ? 'text' : 'password'}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowCPassword}
+                                                onMouseDown={handleMouseDownCPassword}
+                                            >
+                                                {showCPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    label='Confirm Password'
+                                />
+                                <FormHelperText className={classes.FormHelperText} sx={{ color: '#d32f2f' }} >{touched.confirmPassword && errors.confirmPassword}</FormHelperText>
+                            </FormControl>
 
-                    <Button type='submit'>Submit</Button>
+                            <TextField
+                                name="contact"
+                                label="Phone number"
+                                variant="outlined"
+                                fullWidth
+                                type="number"
+                                value={values.contact}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={touched.contact && Boolean(errors.contact)}
+                                helperText={touched.contact && errors.contact}
+                            />
+
+                            <Button sx={{ backgroundColor: '#1976d2' }} variant='contained' >Submit</Button>
+                        </Box>
+                    </Paper>
+
 
                 </form>
             </div>
