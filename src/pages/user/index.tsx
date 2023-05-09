@@ -2,7 +2,7 @@ import { authService } from '@/helpers/services/auth'
 import { Button } from '@mui/material'
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 function index() {
@@ -12,15 +12,19 @@ function index() {
     const [users, setUsers] = useState([])
 
     useEffect(() => {
+
+        const auth = authService.isAuthenticated()
+        console.log(auth)
+
         const isAuth = async () => {
             try {
                 const token = Cookies.get('token')
+
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/user`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 })
-
 
                 if (response.status === 200) {
                     setAuthorized(true)

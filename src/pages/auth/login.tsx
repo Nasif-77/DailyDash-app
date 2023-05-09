@@ -1,6 +1,8 @@
 import Login from '../../components/Login'
 import { decrement, decrementByAmount, increment, incrementByAmount, reset, selectCount } from '@/store/reducers/counterSlice'
 import { Button, Typography } from '@mui/material'
+import { GetServerSideProps } from 'next'
+import { NextRequest } from 'next/server'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
@@ -8,6 +10,7 @@ import { useDispatch } from 'react-redux'
 function login() {
     const dispatch = useDispatch()
     const count = useSelector(selectCount)
+
     return (
         <div>
             <Login />
@@ -22,3 +25,12 @@ function login() {
 }
 
 export default login
+
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+    const referer = req.url
+    console.log(referer, '-----refereerererrer')
+    return {
+        props: {}
+    }
+}

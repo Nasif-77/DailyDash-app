@@ -1,5 +1,5 @@
 import { Box, Button, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import classes from '../styles/general.module.scss'
 import { useFormik } from 'formik';
 import { loginSchema } from '@/validation/validation';
@@ -15,6 +15,10 @@ function Login() {
     // const dispatch = useDispatch()
     // const iEmail = useSelector(selectEmail)
     // const iPassword = useSelector(selectPassword)
+
+    useEffect(() => {
+        console.log()
+    }, [])
 
     const [showPassword, setShowPassword] = useState(false);
     const [inputText, setInputText] = useState({ state: false, text: '' });
@@ -130,6 +134,7 @@ function Login() {
                                 </svg>
                             </Button>
                         </Typography>
+                        <Typography>Don't have an account </Typography>
 
                     </Box>
                 </Paper>

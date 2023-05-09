@@ -12,11 +12,11 @@ export default function Home() {
       <div className="p-4">
 
         <Link style={{ textDecoration: 'none' }} href={'/auth/login'}>
-          <Button variant='contained' >Login</Button>
+          <Button sx={{margin:'10px'}} variant='contained' >Login</Button>
         </Link>
 
         <Link style={{ textDecoration: 'none' }} href={'/auth/signup'}>
-          <Button variant='contained' >Signup</Button>
+          <Button sx={{margin:'10px'}} variant='contained' >Signup</Button>
         </Link>
       </div>
     </main>
