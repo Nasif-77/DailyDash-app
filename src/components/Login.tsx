@@ -1,24 +1,19 @@
-import { Box, Button, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Box, Button, FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper, TextField, Typography } from '@mui/material'
+import React, { useState } from 'react'
 import classes from '../styles/general.module.scss'
 import { useFormik } from 'formik';
 import { loginSchema } from '@/validation/validation';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { authService } from '@/helpers/services/auth';
 import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
 
 
 
 function Login() {
 
     const router = useRouter()
-    // const dispatch = useDispatch()
-    // const iEmail = useSelector(selectEmail)
-    // const iPassword = useSelector(selectPassword)
 
-    useEffect(() => {
-        console.log()
-    }, [])
 
     const [showPassword, setShowPassword] = useState(false);
     const [inputText, setInputText] = useState({ state: false, text: '' });
@@ -123,7 +118,7 @@ function Login() {
                         <Button variant='outlined' type='submit'>Submit</Button>
 
                         <Typography>Login with
-                            <Button>
+                            <Button onClick={() => signIn()}>
                                 <svg viewBox="0 0 75 24" width="75" height="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="BFr46e xduoyf">
                                     <g id="qaEJec"><path fill="#ea4335" d="M67.954 16.303c-1.33 0-2.278-.608-2.886-1.804l7.967-3.3-.27-.68c-.495-1.33-2.008-3.79-5.102-3.79-3.068 0-5.622 2.41-5.622 5.96 0 3.34 2.53 5.96 5.92 5.96 2.73 0 4.31-1.67 4.97-2.64l-2.03-1.35c-.673.98-1.6 1.64-2.93 1.64zm-.203-7.27c1.04 0 1.92.52 2.21 1.264l-5.32 2.21c-.06-2.3 1.79-3.474 3.12-3.474z"></path></g>
                                     <g id="YGlOvc"><path fill="#34a853" d="M58.193.67h2.564v17.44h-2.564z"></path></g>

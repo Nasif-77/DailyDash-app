@@ -1,14 +1,23 @@
 import { store } from '../store';
 import '@/styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux';
+import { SessionProvider } from 'next-auth/react'
+import { NextComponentType, NextPageContext } from 'next';
 
-export default function App({ Component, pageProps }: AppProps) {
+interface props {
+  Component: NextComponentType<NextPageContext, any, any>,
+  pageProps: any,
+  session: any
+}
+
+export default function App({ Component, pageProps, session }: props) {
 
   return (
     <Provider store={store}>
-      <Component {...pageProps} />
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
     </Provider>
   )
 }
