@@ -8,7 +8,6 @@ import { signOut, getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { Session } from 'next-auth'
-import { verifyGoogleToken } from '@/helpers/services/googleAuth'
 
 interface props {
     session: Session,
@@ -28,15 +27,10 @@ function index({ session, googleToken }: props) {
             const token = Cookies.get('token')
             try {
 
-                if (googleToken) {
-                    const response = await verifyGoogleToken(googleToken)
-                    console.log(response)
-                }
-
-                if (token) {
+                if (token || googleToken) {
                     const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/user`, {
                         headers: {
-                            Authorization: `Bearer ${token}`
+                            Authorization: `Bearer ${token || googleToken}`
                         }
                     })
 
@@ -52,7 +46,7 @@ function index({ session, googleToken }: props) {
                 const status = error.response?.status
                 if (status === 401) {
                     setAuthorized(false)
-                    router.push('/auth/login')
+                    // router.push('/auth/login')
                 }
             }
         }
